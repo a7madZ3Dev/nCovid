@@ -30,7 +30,7 @@ class APIService {
     throw response;
   }
   
- // get diffrent data
+ // get different data
 
   Future<int> getEndpointData({
     @required String accessToken,

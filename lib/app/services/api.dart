@@ -1,5 +1,6 @@
-import './api_keys.dart';
 import 'package:flutter/foundation.dart';
+
+import './api_keys.dart';
 
 enum Endpoint {
   cases,
