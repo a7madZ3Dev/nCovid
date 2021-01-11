@@ -37,14 +37,18 @@ class EndpointCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    MediaQueryData mediaQuery = MediaQuery.of(context);
     final cardData = _cardsData[endpoint];
     return Container(
-      width: MediaQuery.of(context).size.width,
+      height: mediaQuery.orientation == Orientation.landscape
+          ? mediaQuery.size.height * 0.4
+          : mediaQuery.size.height * 0.17,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 6.0),
         child: Card(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -55,9 +59,9 @@ class EndpointCard extends StatelessWidget {
                       .headline6
                       .copyWith(color: cardData.color),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.width * 0.018),
+                SizedBox(height: mediaQuery.size.width * 0.018),
                 SizedBox(
-                  height: MediaQuery.of(context).size.width * 0.11,
+                  height: mediaQuery.size.width * 0.11,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,

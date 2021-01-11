@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -6,6 +8,7 @@ import './endpoint_card.dart';
 import '../repositories/endpoints_data.dart';
 import '../repositories/data_repository.dart';
 import './last_updated_status_text.dart';
+import './show_alert_dialog.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -22,16 +25,33 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Future<void> _updateData() async {
-    final dataRepository = Provider.of<DataRepository>(context, listen: false);
-    final endpointsData = await dataRepository.getAllEndpointsData();
-    setState(() => _endpointsData = endpointsData);
+    try {
+      final dataRepository =
+          Provider.of<DataRepository>(context, listen: false);
+      final endpointsData = await dataRepository.getAllEndpointsData();
+      setState(() => _endpointsData = endpointsData);
+    } on SocketException catch (_) {   // internet cut 
+      showAlertDialog(
+        context: context,
+        title: 'Connection Error',
+        content: 'Could not retrieve data. Please try again later.',
+        defaultActionText: 'OK',
+      );
+    } catch (_) {
+      showAlertDialog(
+        context: context,
+        title: 'Unknown Error',
+        content: 'You cont\'t access this website',
+        defaultActionText: 'OK',
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final formatter = LastUpdatedDateFormatter(
       lastUpdated: _endpointsData != null
-          ? _endpointsData.values[Endpoint.cases].date
+          ? _endpointsData.values[Endpoint.cases]?.date
           : null,
     );
     return Scaffold(
