@@ -5,6 +5,7 @@ import '../services/api.dart';
 import './endpoint_card.dart';
 import '../repositories/endpoints_data.dart';
 import '../repositories/data_repository.dart';
+import './last_updated_status_text.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -28,6 +29,11 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
+    final formatter = LastUpdatedDateFormatter(
+      lastUpdated: _endpointsData != null
+          ? _endpointsData.values[Endpoint.cases].date
+          : null,
+    );
     return Scaffold(
       appBar: AppBar(
         title: Text('CoronaVirus Tracker'),
@@ -35,16 +41,19 @@ class _DashboardState extends State<Dashboard> {
       ),
       body: RefreshIndicator(
         onRefresh: _updateData,
-        child: ListView(
-          children: Endpoint.values
+        child: ListView(children: [
+          LastUpdatedStatusText(
+            text: formatter.lastUpdatedStatusText(),
+          ),
+          ...Endpoint.values
               .map((endpoint) => EndpointCard(
                     endpoint: endpoint,
                     value: _endpointsData != null
-                        ? _endpointsData.values[endpoint]
+                        ? _endpointsData.values[endpoint].value
                         : null,
                   ))
               .toList(),
-        ),
+        ]),
       ),
     );
   }

@@ -4,6 +4,7 @@ import 'package:http/http.dart';
 import '../services/api_services.dart';
 import '../services/api.dart';
 import './endpoints_data.dart';
+import '../services/endpoint_data.dart';
 
 class DataRepository {
   DataRepository({@required this.apiService});
@@ -11,8 +12,8 @@ class DataRepository {
 
   String _accessToken;
 
-  Future<int> getEndpointData(Endpoint endpoint) async =>
-      await _getDataRefreshingToken<int>(
+  Future<EndpointData> getEndpointData(Endpoint endpoint) async =>
+      await _getDataRefreshingToken<EndpointData>(
         onGetData: () => apiService.getEndpointData(
             accessToken: _accessToken, endpoint: endpoint),
       );
@@ -39,7 +40,7 @@ class DataRepository {
   }
 
 // get data from all apis' parallel
- 
+
   Future<EndpointsData> _getAllEndpointsData() async {
     final values = await Future.wait([
       apiService.getEndpointData(
