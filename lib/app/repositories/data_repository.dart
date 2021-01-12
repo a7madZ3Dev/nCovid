@@ -1,14 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 
-import '../services/api_services.dart';
 import '../services/api.dart';
 import './endpoints_data.dart';
+import '../services/api_services.dart';
 import '../services/endpoint_data.dart';
+import '../services/data_cache_service.dart';
 
 class DataRepository {
-  DataRepository({@required this.apiService});
+  DataRepository({@required this.apiService, @required this.dataCacheService});
   final APIService apiService;
+  final DataCacheService dataCacheService;
 
   String _accessToken;
 
@@ -18,10 +20,17 @@ class DataRepository {
             accessToken: _accessToken, endpoint: endpoint),
       );
 
-  Future<EndpointsData> getAllEndpointsData() async =>
-      await _getDataRefreshingToken<EndpointsData>(
-        onGetData: _getAllEndpointsData,
-      );
+  // get cache data    
+  EndpointsData getAllEndpointsCachedData() => dataCacheService.getData(); 
+    
+  Future<EndpointsData> getAllEndpointsData() async {
+    final endpointsData = await _getDataRefreshingToken<EndpointsData>(
+      onGetData: _getAllEndpointsData,
+    );
+    // save to cache
+    await dataCacheService.setData(endpointsData);
+    return endpointsData;
+  }
 
   Future<T> _getDataRefreshingToken<T>({Future<T> Function() onGetData}) async {
     try {
