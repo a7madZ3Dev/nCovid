@@ -13,8 +13,10 @@ import './app/repositories/data_repository.dart';
 void main() async {
 // to change time to another local time
   WidgetsFlutterBinding.ensureInitialized();
+
   Intl.defaultLocale = 'en_GB'; // for england
   await date.initializeDateFormatting();
+  
   final sharedPreferences = await SharedPreferences.getInstance();
   runApp(MyApp(sharedPreferences: sharedPreferences));
 }
