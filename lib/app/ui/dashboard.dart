@@ -39,7 +39,7 @@ class _DashboardState extends State<Dashboard> {
         content: 'Could not retrieve data. Please try again later.',
         defaultActionText: 'OK',
       );
-    } catch (_) {    // invalued log in  
+    } catch (_) {    // invalid log in  
       showAlertDialog(
         context: context,
         title: 'Unknown Error',
