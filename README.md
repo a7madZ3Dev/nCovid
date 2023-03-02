@@ -8,7 +8,7 @@ A simple app used to track the coronavirus, which includes information on confir
 <img alt="png" src="preview/view_1.png" width= "300" />
 
 ## 🎥 Promo Video
-<img alt="GIF" src="preview/demo.gif" width= "300" />
+<img alt="GIF" src="preview/demo_1.gif" width= "300" />
 
 ## 🔗 API Information
 API Used: https://ncov2019-admin.firebaseapp.com
